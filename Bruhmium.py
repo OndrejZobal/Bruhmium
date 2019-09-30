@@ -2,7 +2,7 @@ import BruhmiumBrowser
 
 
 def main():
-    pass
+    BruhmiumBrowser.Okno_uzivatel()
 
 
 if __name__ == '__main__':

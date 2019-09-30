@@ -48,7 +48,7 @@ class Okno_uzivatel:
         tabs.add_command(label='Tab_3', command=None)
 
         self.menubar.add_command(label="Options")
-        self.menubar.add_command(label = "Quit")
+        self.menubar.add_command(label = "Quit", command = quit)
 
 
         self.info_uzivatel1 = tk.Label(self.okno, text = "Uzivatel: ")
@@ -83,6 +83,9 @@ class Okno_uzivatel:
     def zviditelneniOkna(self):
         self.okno.config(menu = self.menubar)
         self.okno.mainloop()
+
+    def quit(self):
+        self.okno.destroy()
 
 Okno_uzivatel()
 

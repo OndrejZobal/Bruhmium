@@ -16,4 +16,6 @@ if __name__ == '__main__':
         debug()
     input('Press any key to continue...')
 else:
-    print('Bruhmium-Core modul loaded')
+    print('Bruhmium-Core module loaded')
+
+#bruh bruh bruh

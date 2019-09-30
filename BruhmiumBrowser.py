@@ -32,7 +32,7 @@ class Okno_uzivatel:
     def inicializaceOkna(self):
         self.okno = tk.Tk()  # vytvori­ objekt grafickeho okna
         self.okno.title("Overeni uzivatele")  # nastavi­ titulek
-        self.okno.geometry("400x100+400+400")
+        self.okno.geometry("1000x900+400+0")
 
     def obsahOkna(self):
 
@@ -51,41 +51,26 @@ class Okno_uzivatel:
         self.menubar.add_command(label = "Quit", command = quit)
 
 
-        self.info_uzivatel1 = tk.Label(self.okno, text = "Uzivatel: ")
-        self.info_uzivatel1.grid(row = 0, column = 0)
+        # URL, back button, etc.
 
-        self.uzivatel1_string = tk.StringVar()
-        self.uzivatel1 = tk.Entry(self.okno, textvariable = self.uzivatel1_string)
-        self.uzivatel1.focus_set()  # kurzor v poli
-        self.uzivatel1.grid(row = 0, column = 1)
+        self.ulrMenuFrame = tk.Frame()
+        self.backButton = tk.Button(self.ulrMenuFrame, text = "<-")
+        self.backButton.grid(column = 0, row = 0, ipadx = 20, padx = 20)
 
-        self.info_heslo1 = tk.Label(self.okno, text="      Heslo: ")
-        self.info_heslo1.grid(row=0, column=2)
-
-        self.heslo1_string = tk.StringVar()
-        self.heslo1 = tk.Entry(self.okno, textvariable=self.heslo1_string, show = "*")
-        self.heslo1.focus_set()  # kurzor v poli
-        self.heslo1.grid(row=0, column=3)
+        self.urlField = tk.Entry(width = 80)
+        self.urlField.grid(column = 1, row = 0, sticky = "w")
 
 
-        tk.Label(self.okno, text = "Overeni udaju:", font = 14).grid(row = 1, columnspan=3, sticky = "W")
+        OPTIONS = ["Placeholder1", "Placeholder2", "Placeholder3"]
+        self.openedTab = tk.StringVar(self.ulrMenuFrame)
+        self.openedTab.set(OPTIONS[0])
+        self.tabMenu = tk.OptionMenu(self.ulrMenuFrame, self.openedTab , *OPTIONS)
+        self.tabMenu.grid(column = 2, row = 0)
+
+        self.ulrMenuFrame.grid(column = 0, row = 0)
 
 
-        self.overeni = tk.Button(self.okno, text="Overeni", command = self.stisk_tlacitka, bg = "blue", fg = "skyblue", padx=20, pady=10)
-        self.overeni.grid(row=3, column=3)
-
-    def stisk_tlacitka(self):
-        if neco :
-            tk.messagebox.showinfo("nazev okna", "text")
-        else:
-            tk.messagebox.showerror("nazev okna", "text")
 
     def zviditelneniOkna(self):
         self.okno.config(menu = self.menubar)
         self.okno.mainloop()
-
-    def quit(self):
-        self.okno.destroy()
-
-Okno_uzivatel()
-

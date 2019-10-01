@@ -52,7 +52,7 @@ def main():
     global clithread
     clithread = threading.Thread(target=cli)
     clithread.start()
-    print('CLI Manager Launched')
+    print(r'CLI Manager Launched. Type "help" for help.')
 
 
 def debug():

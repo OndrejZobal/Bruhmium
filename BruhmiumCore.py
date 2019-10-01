@@ -1,6 +1,7 @@
 import threading
 import time
-from Libraries import requests
+#from Libraries import requests
+from Libraries import urllib3
 from Libraries import tab
 
 tabs = []
@@ -12,11 +13,12 @@ quitting = False
 
 
 def webdownlader(url):  # Downloads the webpage and stores it
-    return requests.get(url=url)
+    http = urllib3.PoolManager()
+    return http.request('GET', url)
 
 
 def webdraw(i):  # Draws the web onto the canvas
-    print(tabs[i].request.text)
+    print(tabs[i].request.data)
 
 
 def webloader(url):  # Downlads web and then draws it
@@ -33,19 +35,30 @@ def loadweb(url):  # Starts Weabloader in a new thread
     downloader.start()
 
 
-def cli():
+def cli():  # Takes cara of cli I/O. Runs in its own thread.
     global quitting
     while not quitting:
         command = input().lower().split(' ')
         if command[0] == 'quit':
-            quitting = True
+            quit()
         elif command[0] == 'help':
-            print('bruh')
+            print('Available commands:')
+            print('loadpage + url \n\tDownloads and draws a web page.')
+            print('tabs \n\tShows a list of all opened tabs')
         elif command[0] == 'loadpage':
             if len(command) > 1:
                 loadweb(command[1])
             else:
                 print("Missing url")
+        elif command[0] == 'tabs':
+            if len(tabs) > 1:
+                print('Open Tabs:')
+                for i in tabs:
+                    print('\t'+i.title+'\t>\t'+i.urls[len(i.urls)-1])
+            else:
+                print('There are no open tabs.')
+        else:
+            print('Unknown command: "'+command[0]+'".')
 
 
 def main():

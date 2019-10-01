@@ -102,7 +102,7 @@ class HTTPAdapter(BaseAdapter):
 
     Usage::
 
-      >>> import requests
+      >>> from Libraries import requests
       >>> s = requests.Session()
       >>> a = requests.adapters.HTTPAdapter(max_retries=3)
       >>> s.mount('http://', a)

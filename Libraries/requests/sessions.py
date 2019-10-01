@@ -344,7 +344,7 @@ class Session(SessionRedirectMixin):
 
     Basic Usage::
 
-      >>> import requests
+      >>> from Libraries import requests
       >>> s = requests.Session()
       >>> s.get('https://httpbin.org/get')
       <Response [200]>

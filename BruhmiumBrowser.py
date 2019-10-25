@@ -1,7 +1,7 @@
 import tkinter as tk
 import BruhmiumCore
 from tkinter import messagebox
-
+import time
 def main():
     pass
 
@@ -25,9 +25,11 @@ class Okno_uzivatel:
     #             Button overeni
 
     def __init__(self):
+        self.tabs = []
         self.inicializaceOkna()
         self.obsahOkna()
         self.zviditelneniOkna()
+
 
     def inicializaceOkna(self):
         self.okno = tk.Tk()  # vytvori­ objekt grafickeho okna
@@ -38,6 +40,7 @@ class Okno_uzivatel:
 
 
         # Creating Menubar
+        self.tabTitles = []
         self.menubar = tk.Menu(self.okno)
         self.menubar.add_command(label="Home")
         # Adding File Menu and commands
@@ -53,23 +56,24 @@ class Okno_uzivatel:
 
         # URL-entry, back button
 
-        self.ulrMenuFrame = tk.Frame()
+        self.ulrMenuFrame = tk.Frame(self.okno)
         self.backButton = tk.Button(self.ulrMenuFrame, text = "<-")
         self.backButton.grid(column = 0, row = 0, ipadx = 20, padx = 20)
 
-        self.urlField = tk.Entry(width = 80)
-        self.urlField.grid(column = 1, row = 0)
+        self.urlField = tk.Entry(self.ulrMenuFrame, width = 80)
+        self.urlField.grid(column = 2, row = 0)
 
         #tab menu
 
-        OPTIONS = ["Placeholder1", "Placeholder2", "Placeholder3"]  #opened tabs
-        self.openedTab = tk.StringVar(self.ulrMenuFrame)            #active tab
-        self.openedTab.set(OPTIONS[0])                              #default tab
-        self.tabMenu = tk.OptionMenu(self.ulrMenuFrame, self.openedTab, *OPTIONS)
-        self.tabMenu.grid(column = 2, row = 0)
-        self.openedTab.trace("w", self.changed)
-
+        #opened tabs
+        self.openedTab = tk.StringVar(self.ulrMenuFrame)
         self.ulrMenuFrame.grid(column = 0, row = 0)
+
+        self.searchButton = tk.Button(self.ulrMenuFrame, text = "Search", command = self.search)
+        self.searchButton.grid(row = 0, column = 3)
+        time.sleep(0.5)
+        self.refresh()
+
 
     def changed(self, *args):      #funkce co se zavolá pokaždé co se změní tab
         print("SUCCESS")
@@ -79,3 +83,27 @@ class Okno_uzivatel:
     def zviditelneniOkna(self):
         self.okno.config(menu = self.menubar)
         self.okno.mainloop()
+
+
+    def refresh(self):
+        try:
+            self.tabMenu.destroy()
+
+        except:
+            pass
+        for tab in BruhmiumCore.tabs:
+            self.tabTitles.append(tab.title)
+
+        self.openedTab = tk.StringVar(self.ulrMenuFrame)
+        self.tabMenu = tk.OptionMenu(self.ulrMenuFrame, self.openedTab, self.tabTitles)
+
+        self.tabMenu.grid(column=1, row=0)
+        self.openedTab.trace("w", self.changed)
+        print(self.tabTitles)
+
+    def search(self):
+        BruhmiumCore.load_web(self.urlField.get())
+        self.tabs.append(self.urlField.get())
+        self.refresh()
+
+

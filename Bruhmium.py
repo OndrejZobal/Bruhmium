@@ -1,9 +1,13 @@
 import BruhmiumBrowser
 
 
-def main():
-    BruhmiumBrowser.Okno_uzivatel()
+def load_cfg():
     pass
+
+
+def main():
+    load_cfg()
+    BruhmiumBrowser.main()
 
 
 if __name__ == '__main__':

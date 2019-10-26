@@ -1,109 +1,93 @@
-import tkinter as tk
+import tkinter
 import BruhmiumCore
-from tkinter import messagebox
-import time
+
+
+# Defining a whole bunch of variables for Tkinter elements
+tabs = back_button = search_entry = menu_bar = window = upper_menu_frame = search_button = \
+    open_tab_stringvar = None
+
+
+def window_initialization():    # Creates the window and all the elements, then it locks the main thread inside a loop.
+    global tabs, window, menu_bar, back_button, upper_menu_frame, search_entry, search_button, open_tab_stringvar
+
+    # Sets up window's attributes
+    window = tkinter.Tk()
+    window.title('Bruhmium Bruser')
+    window.geometry('1000x900+400+0')
+
+    # Creating the cool bar on the top (menu_bar)
+    menu_bar = tkinter.Menu(window)
+    menu_bar.add_command(label='Home')
+    menu_bar.add_command(label='Options')
+    menu_bar.add_command(label='Quit', command=BruhmiumCore.quit_bruhmium)
+
+    # Creating a upper_menu_frame - a frame that contains all elements above canvas
+    upper_menu_frame = tkinter.Frame(window)
+    upper_menu_frame.grid(row=0, column=0)
+
+    # Creating back_button - a button to load the previous address
+    back_button = tkinter.Button(upper_menu_frame, text='Back')
+    back_button.grid(column=0, row=0, ipadx=20, padx=20)
+
+    # Creating search_entry - an input field to enter the web address
+    search_entry = tkinter.Entry(upper_menu_frame, width=80)
+    search_entry.grid(column=2, row=0)
+
+    # Creating open_tab_stringvar - a stringvar containing information about currently opened tab
+    open_tab_stringvar = tkinter.StringVar(upper_menu_frame)
+
+    # Creating search_button - loads page on the address int the search_entry
+    search_button = tkinter.Button(upper_menu_frame, text='Search', command=search)
+    search_button.grid(row=0, column=3)
+
+    # This is where the shit gets real
+    window.config(menu=menu_bar)
+    tab_selector_refresh()
+    window.mainloop()
+
+
+def change_tab(*args):
+    print('Tab was changed successfully (' + str(args) + ').')
+
+
+def tab_selector_refresh():
+    global menu_bar
+    '''
+    try:
+        menu_bar.destroy()
+
+    except:
+        pass
+    '''
+    opened_tab = tkinter.StringVar(upper_menu_frame)
+    tab_selector_menu = tkinter.OptionMenu(upper_menu_frame, opened_tab, [])
+
+    tab_selector_menu.grid(column=1, row=0)
+    opened_tab.trace('w', change_tab)
+
+
+def search():
+    pass
+
+
+def core_link():    # An important function that sets some Core variables to corresponding functions, also starts core
+    BruhmiumCore.ui_refresh = tab_selector_refresh
+
+    BruhmiumCore.main()
+
+
 def main():
-    pass
+    print('Bruhmium-Browser module loaded')
+    core_link()
+    window_initialization()
 
 
-def debug():
-    pass
+def debug():    # Gets executed when executing the file directly. No one ever uses it
+    main()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # This goes last
     print('THIS SCRIPT IS NOT TO BE RAN ALONE \nDo you wish to continue in debug mode?\n')
-    if input(">") in ['yes', 'y', '1']:
+    if input("y/n>") in ['yes', 'y', '1', 'ano', 'a', 'jo', 'j']:
         debug()
     input('Press any key to continue...')
-else:
-    print('Bruhmium-Browser module loaded')
-
-class Okno_uzivatel:
-    # vlastnosti: Label info_uzivatel1, Entry uzivatel1, Label info_heslo1, Entry heslo1
-    #             Label overeni_udaju,
-    #             Label info_uzivatel2, Entry uzivatel2, Label info_heslo2, Entry heslo2
-    #             Button overeni
-
-    def __init__(self):
-        self.tabs = []
-        self.inicializaceOkna()
-        self.obsahOkna()
-        self.zviditelneniOkna()
-
-
-    def inicializaceOkna(self):
-        self.okno = tk.Tk()  # vytvori­ objekt grafickeho okna
-        self.okno.title("Overeni uzivatele")  # nastavi­ titulek
-        self.okno.geometry("1000x900+400+0")
-
-    def obsahOkna(self):
-
-
-        # Creating Menubar
-        self.tabTitles = []
-        self.menubar = tk.Menu(self.okno)
-        self.menubar.add_command(label="Home")
-        # Adding File Menu and commands
-        tabs = tk.Menu(self.menubar, tearoff=0)
-        self.menubar.add_cascade(label='Tabs', menu=tabs)
-        tabs.add_command(label='Tab_1', command=None)
-        tabs.add_command(label='Tab_2', command=None)
-        tabs.add_command(label='Tab_3', command=None)
-
-        self.menubar.add_command(label="Options")
-        self.menubar.add_command(label = "Quit", command = quit)
-
-
-        # URL-entry, back button
-
-        self.ulrMenuFrame = tk.Frame(self.okno)
-        self.backButton = tk.Button(self.ulrMenuFrame, text = "<-")
-        self.backButton.grid(column = 0, row = 0, ipadx = 20, padx = 20)
-
-        self.urlField = tk.Entry(self.ulrMenuFrame, width = 80)
-        self.urlField.grid(column = 2, row = 0)
-
-        #tab menu
-
-        #opened tabs
-        self.openedTab = tk.StringVar(self.ulrMenuFrame)
-        self.ulrMenuFrame.grid(column = 0, row = 0)
-
-        self.searchButton = tk.Button(self.ulrMenuFrame, text = "Search", command = self.search)
-        self.searchButton.grid(row = 0, column = 3)
-        time.sleep(0.5)
-        self.refresh()
-
-
-    def changed(self, *args):      #funkce co se zavolá pokaždé co se změní tab
-        print("SUCCESS")
-
-
-
-    def zviditelneniOkna(self):
-        self.okno.config(menu = self.menubar)
-        self.okno.mainloop()
-
-
-    def refresh(self):
-        try:
-            self.tabMenu.destroy()
-
-        except:
-            pass
-        for tab in BruhmiumCore.tabs:
-            self.tabTitles.append(tab.title)
-
-        self.openedTab = tk.StringVar(self.ulrMenuFrame)
-        self.tabMenu = tk.OptionMenu(self.ulrMenuFrame, self.openedTab, self.tabTitles)
-
-        self.tabMenu.grid(column=1, row=0)
-        self.openedTab.trace("w", self.changed)
-        print(self.tabTitles)
-
-    def search(self):
-        BruhmiumCore.load_web(self.urlField.get())
-        self.tabs.append(self.urlField.get())
-        self.refresh()
-
-

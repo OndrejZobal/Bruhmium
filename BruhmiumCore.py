@@ -13,6 +13,7 @@ interrupt_draw = False
 quitting = False
 command_queue = queue.Queue()
 default_url = 'http://www.seznam.cz'
+ui_tab_selector_refresh = None
 
 
 def web_drawer(i):  # Draws the web onto the canvas
@@ -23,13 +24,16 @@ def web_drawer(i):  # Draws the web onto the canvas
     print(tabs[i].request.data)
     drawer_thread = None
 
+
 def web_downloader(url):  # Downloads the web page and stores it
     http = urllib3.PoolManager()
     print(str(url))
     return http.request('GET', url)
 
+
 def web_loader(url, create_new=True, draw=True):  # Downlands web and then draws it
     global open_tab
+    global ui_tab_selector_refresh
     if create_new:
         tabs.append(tab.Tab(url, web_downloader(url)))
     else:
@@ -37,12 +41,17 @@ def web_loader(url, create_new=True, draw=True):  # Downlands web and then draws
         open_tab = len(tabs) - 1
     if draw:
         draw_web(open_tab)
+    if ui_tab_selector_refresh:
+        ui_tab_selector_refresh()
     print("Web Loaded")
 
+
 ''' 
-These functions can be used to start processes, they basically just use the functions above, but they can set up important parameters and they 
-launch the functions in their own threads. It is advised to use them instead of using the functions above directly.
+These functions (draw_web, load_web) can be used to start processes, they basically just use the functions above, 
+but they can set up important parameters and they launch the functions in their own threads. 
+It is advised to use them instead of using the functions above directly.
 '''
+
 
 def draw_web(i=open_tab):
     global drawer_thread
@@ -54,11 +63,12 @@ def draw_web(i=open_tab):
     drawer_thread = threading.Thread(target=web_drawer, args=(i,))
     drawer_thread.start()
 
-def load_web(url, create_new=True, draw=True):  # Starts Weabloader in a new thread
-    #TODO clean this garbage.
+
+def load_web(url, create_new=True, draw=True):  # Starts web_loader in a new thread
     global downloader_thread
     downloader_thread = threading.Thread(target=web_loader, args=(url, create_new, draw))
     downloader_thread.start()
+
 
 ''''''
 
@@ -70,14 +80,13 @@ def command_manager():  # Takes cara of cli Commands. Runs in its own thread.
     global quitting
     while not quitting:
         try:
-            while command_queue.empty():
+            while command_queue.empty() and not quitting:
                 time.sleep(0.005)
 
             command = command_queue.get()
 
             if command[0] == 'quit':
-                quitting = True
-                print('Core is quitting. Press enter to finish')
+                quit_bruhmium()
 
             elif command[0] == 'help':
                 print('Available commands:')
@@ -110,10 +119,13 @@ def command_manager():  # Takes cara of cli Commands. Runs in its own thread.
                         if len(tabs) > int(command[1]):
                             open_tab = int(command[1])
                             web_drawer(open_tab)
-                        else:   print('Given number is higher than the number of tabs')
-                    else:   print('This command requires <int> to be given as an argument')
+                        else:
+                            print('Given number is higher than the number of tabs')
+                    else:
+                        print('This command requires <int> to be given as an argument')
                 except:
-                    print('There has been a problem with your command. Make sure that the given argument was of type <int>')
+                    print('There has been a problem with your command. '
+                          'Make sure that the given argument was of type <int>')
 
             elif command[0] == 'refresh':
                 try:
@@ -132,22 +144,28 @@ def command_manager():  # Takes cara of cli Commands. Runs in its own thread.
                             tabs.pop(int(command[1]))
                             if len(tabs) == 0:
                                 load_web(default_url, True, True)
-                        else:   print('Given number is higher than the number of tabs')
-                    else:   print('This command requires <int> to be given as an argument')
+                        else:
+                            print('Given number is higher than the number of tabs')
+                    else:
+                        print('This command requires <int> to be given as an argument')
                 except:
-                    print('There has been a problem with your command. Make sure that the given argument was of type <int>')
+                    print('There has been a problem with your command. '
+                          'Make sure that the given argument was of type <int>')
 
             elif command[0] == 'tablist':
                 if len(tabs) >= 1:
                     print('Open Tabs (' + str(len(tabs)) + '): ')
                     for i in range(len(tabs)):
                         if i == open_tab:
-                            print(">>>", end='') #why the fuck
+                            print(">>>", end='')    # why the fuck
                         print('\t' + tabs[i].title + '\t|\t' + tabs[i].urls[len(tabs[i].urls) - 1])
                 else:
                     print('There are no open tabs.')
+
+            # End
             else:
                 print('Unknown command: "' + command[0] + '".')
+
         except:
             print("Command Manager ran into an error!")
 
@@ -156,23 +174,30 @@ def cli_input():
     while not quitting:
         command_queue.put(input().lower().split(' '))
 
+
+def quit_bruhmium():
+    global quitting
+    print('This is still very buggy. Termination is recommended.')
+    quitting = True
+    quit()
+
+
 def main():
     command_manager_thread = threading.Thread(target=command_manager)
     cli_input_thread = threading.Thread(target=cli_input)
     command_manager_thread.start()
     cli_input_thread.start()
 
-    command_queue.put(['opentab',default_url])
+    command_queue.put(['opentab', default_url])
     print('Bruhmium-Core module loaded')
+
 
 def debug():
     main()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # This goes last
     print('THIS SCRIPT IS NOT TO BE RAN ALONE \nDo you wish to continue in debug mode?\n')
-    if input("y/n>") in ['yes', 'y', '1', 'ano', 'a']:
+    if input("y/n>") in ['yes', 'y', '1', 'ano', 'a', 'jo', 'j']:
         debug()
     input('Press enter key to continue...')
-else:
-    main()

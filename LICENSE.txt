@@ -32,10 +32,9 @@ distributed, merged or published:
     - The creator of the modified software must not have posted cringe in the
         last two years on any social media.
 Before releasing the modified software the creator has to contact the creators
-of the original software and buy them a pizza, that does not include 
-any mushrooms.
+of the original software and buy them a mushroomless pizza.
 
 This software is provided without ANY warranty or technical support and it's
-creators DO NOT guarantee the reliability of this software.
+creators DO NOT guarantee reliability of this software.
 
 <end of document>

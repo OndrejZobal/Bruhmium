@@ -1,0 +1,41 @@
+                    BRUHMIUM DEVELOPMENT GROUP
+                     PULBIC SOFTWARE LICENSE
+                Version: 1, Published: 28 October 2019
+
+Copyright (C) 2019 Bruhmium Development Group.
+
+Bruhmium Development Group Public Software License Version: 1 
+(the BDG PSL v.1) is a software license aimed for anyone seeking justice 
+in digital ownership rights. Anyone and everyone can distribute copies 
+of this document, as long as it remains unchanged.
+
+Permission is hereby granted, to anyone possessing a copy of this software 
+and files adjacent (the software), free of any fee, to use, and for personal 
+needs modify, this software, as long as they have NOT played Fortnite(TM) 
+unironically in the last three months.
+
+Permission to distribute an exact copy of this software for free is granted
+with the only condition of not owning any Apple(TM) or BMW(TM) products
+however, any modified version of this software (not made by the original 
+creator) has to comply with the following conditions in order to be 
+distributed, merged or published:
+    - The software must be distributed for free.
+    - The source code must be provided and documented.
+    - The developer of the software must like pineapple on pizza.
+    - The software must credit all creators of previous versions.
+    - The software must not include support for CSS nor JavaScript, nor can it
+        use any other GUI than Tkinter, for drawing the main window.
+    - The software must include a copy of this document and cannot be released.
+        under any other license, except for changing to a newer
+        version of BDG PSL.
+    - The software must include in its source code, some dank easter eggs.
+    - The creator of the modified software must not have posted cringe in the
+        last two years on any social media.
+Before releasing the modified software the creator has to contact the creators
+of the original software and buy them a pizza, that does not include 
+any mushrooms.
+
+This software is provided without ANY warranty or technical support and it's
+creators DO NOT guarantee the reliability of this software.
+
+<end of document>
